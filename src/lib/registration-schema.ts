@@ -8,30 +8,27 @@ const optionalUrl = z
   .default("");
 
 const registrationFields = {
-    full_name: z.string().trim().min(2, "Full name required"),
-    email: z.string().trim().email("Valid email required"),
-    phone: z
-      .string()
-      .trim()
-      .regex(
-        /^\+?[\d\s().-]{7,20}$/,
-        "Enter a valid phone number (digits, spaces, and + ( ) - . only)",
-      ),
-    country: z.string().trim().min(1, "Country is required"),
-    participating_as: z.enum(["Solo", "Team"]),
-    team_name: z.string().trim().default(""),
-    primary_interest: z.string().trim().min(1, "Pick your primary interest"),
-    experience_level: z.string().trim().min(1, "Select your experience level"),
-    organization: z.string().trim().default(""),
-    partner_org: z.string().trim().default(""),
-    // At least one is required so organizers can verify identity.
-    linkedin_url: optionalUrl,
-    website_url: optionalUrl,
-    heard_about: z.string().trim().min(1, "Let us know how you heard about us"),
-    referred_by: z
-      .string()
-      .trim()
-      .min(2, "Tell us who referred you (a name or organization)"),
+  full_name: z.string().trim().min(2, "Full name required"),
+  email: z.string().trim().email("Valid email required"),
+  phone: z
+    .string()
+    .trim()
+    .regex(
+      /^\+?[\d\s().-]{7,20}$/,
+      "Enter a valid phone number (digits, spaces, and + ( ) - . only)"
+    ),
+  country: z.string().trim().min(1, "Country is required"),
+  participating_as: z.enum(["Solo", "Team"]),
+  team_name: z.string().trim().default(""),
+  primary_interest: z.string().trim().min(1, "Pick your primary interest"),
+  experience_level: z.string().trim().min(1, "Select your experience level"),
+  organization: z.string().trim().default(""),
+  partner_org: z.string().trim().default(""),
+  // At least one is required so organizers can verify identity.
+  linkedin_url: optionalUrl,
+  website_url: optionalUrl,
+  heard_about: z.string().trim().min(1, "Let us know how you heard about us"),
+  referred_by: z.string().trim().min(2, "Tell us who referred you (a name or organization)"),
 };
 
 // Rules that span more than one field. Each applies only while the questions
@@ -42,15 +39,16 @@ function refineRegistration<T extends z.ZodTypeAny>(schema: T, hidden: ReadonlyS
     out = out.refine(
       (d: { participating_as: string; team_name: string }) =>
         d.participating_as !== "Team" || d.team_name.trim().length > 0,
-      { message: "Team name required", path: ["team_name"] },
+      { message: "Team name required", path: ["team_name"] }
     );
   if (!hidden.has("linkedin_url"))
     out = out.refine(
-      (d: { linkedin_url: string; website_url: string }) => d.linkedin_url !== "" || d.website_url !== "",
+      (d: { linkedin_url: string; website_url: string }) =>
+        d.linkedin_url !== "" || d.website_url !== "",
       {
         message: "Add a LinkedIn profile or personal website so we can verify you",
         path: ["linkedin_url"],
-      },
+      }
     );
   return out;
 }
@@ -61,7 +59,11 @@ const optional = z.string().trim().optional().default("");
 function relax<S extends z.ZodRawShape>(shape: S, hidden: ReadonlySet<string>): z.ZodRawShape {
   return {
     ...shape,
-    ...Object.fromEntries(Object.keys(shape).filter((k) => hidden.has(k)).map((k) => [k, optional])),
+    ...Object.fromEntries(
+      Object.keys(shape)
+        .filter((k) => hidden.has(k))
+        .map((k) => [k, optional])
+    ),
   };
 }
 
@@ -69,7 +71,7 @@ function relax<S extends z.ZodRawShape>(shape: S, hidden: ReadonlySet<string>): 
 // this just builds the participant list.
 export const registrationSchema = refineRegistration(
   z.object(registrationFields),
-  NOTHING_HIDDEN,
+  NOTHING_HIDDEN
 ) as z.ZodType<RegistrationInput, z.ZodTypeDef, unknown>;
 
 /**
@@ -77,9 +79,13 @@ export const registrationSchema = refineRegistration(
  * organizer has switched off are not required.
  */
 export function registrationSchemaFor(hidden: ReadonlySet<string>) {
-  return refineRegistration(z.object(relax(registrationFields, hidden)), hidden) as typeof registrationSchema;
+  return refineRegistration(
+    z.object(relax(registrationFields, hidden)),
+    hidden
+  ) as typeof registrationSchema;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- used by the type below
 const registrationObject = z.object(registrationFields);
 export type RegistrationInput = z.infer<typeof registrationObject>;
 
@@ -93,7 +99,7 @@ const mentorFields = {
     .trim()
     .regex(
       /^\+?[\d\s().-]{7,20}$/,
-      "Enter a valid phone number (digits, spaces, and + ( ) - . only)",
+      "Enter a valid phone number (digits, spaces, and + ( ) - . only)"
     ),
   country: z.string().trim().min(1, "Country is required"),
   occupation: z.string().trim().min(2, "Your title / occupation is required"),
@@ -104,16 +110,10 @@ const mentorFields = {
     .min(1, "LinkedIn profile is required for mentors")
     .url("Enter a full URL (include https://)"),
   website_url: optionalUrl,
-  primary_interest: z
-    .string()
-    .trim()
-    .min(1, "Pick the track you can mentor"),
+  primary_interest: z.string().trim().min(1, "Pick the track you can mentor"),
   experience_level: z.string().trim().min(1, "Select your experience level"),
   heard_about: z.string().trim().min(1, "Let us know how you heard about us"),
-  referred_by: z
-    .string()
-    .trim()
-    .min(2, "Tell us who referred you (a name or organization)"),
+  referred_by: z.string().trim().min(2, "Tell us who referred you (a name or organization)"),
 };
 
 export const mentorRegistrationSchema = z.object(mentorFields);

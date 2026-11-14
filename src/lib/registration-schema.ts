@@ -31,25 +31,26 @@ const registrationFields = {
   referred_by: z.string().trim().min(2, "Tell us who referred you (a name or organization)"),
 };
 
+const registrationObject = z.object(registrationFields);
+export type RegistrationInput = z.infer<typeof registrationObject>;
+
 // Rules that span more than one field. Each applies only while the questions
 // it is about are being asked.
-function refineRegistration<T extends z.ZodTypeAny>(schema: T, hidden: ReadonlySet<string>) {
-  let out: z.ZodTypeAny = schema;
+function refineRegistration(
+  schema: z.ZodType,
+  hidden: ReadonlySet<string>
+): z.ZodType<RegistrationInput> {
+  let out = schema as z.ZodType<RegistrationInput>;
   if (!hidden.has("participating_as"))
-    out = out.refine(
-      (d: { participating_as: string; team_name: string }) =>
-        d.participating_as !== "Team" || d.team_name.trim().length > 0,
-      { message: "Team name required", path: ["team_name"] }
-    );
+    out = out.refine((d) => d.participating_as !== "Team" || d.team_name.trim().length > 0, {
+      message: "Team name required",
+      path: ["team_name"],
+    });
   if (!hidden.has("linkedin_url"))
-    out = out.refine(
-      (d: { linkedin_url: string; website_url: string }) =>
-        d.linkedin_url !== "" || d.website_url !== "",
-      {
-        message: "Add a LinkedIn profile or personal website so we can verify you",
-        path: ["linkedin_url"],
-      }
-    );
+    out = out.refine((d) => d.linkedin_url !== "" || d.website_url !== "", {
+      message: "Add a LinkedIn profile or personal website so we can verify you",
+      path: ["linkedin_url"],
+    });
   return out;
 }
 
@@ -69,25 +70,18 @@ function relax<S extends z.ZodRawShape>(shape: S, hidden: ReadonlySet<string>): 
 
 // Public pre-event registration. Lighter than the project submission schema —
 // this just builds the participant list.
-export const registrationSchema = refineRegistration(
-  z.object(registrationFields),
+export const registrationSchema: z.ZodType<RegistrationInput> = refineRegistration(
+  registrationObject,
   NOTHING_HIDDEN
-) as z.ZodType<RegistrationInput, z.ZodTypeDef, unknown>;
+);
 
 /**
  * The registration rules for an event: the same, except that questions the
  * organizer has switched off are not required.
  */
-export function registrationSchemaFor(hidden: ReadonlySet<string>) {
-  return refineRegistration(
-    z.object(relax(registrationFields, hidden)),
-    hidden
-  ) as typeof registrationSchema;
+export function registrationSchemaFor(hidden: ReadonlySet<string>): z.ZodType<RegistrationInput> {
+  return refineRegistration(z.object(relax(registrationFields, hidden)), hidden);
 }
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- used by the type below
-const registrationObject = z.object(registrationFields);
-export type RegistrationInput = z.infer<typeof registrationObject>;
 
 // Public mentor sign-up (/mentor). Written to the same registrations table
 // with role='mentor'. LinkedIn is required — mentors are vetted people.

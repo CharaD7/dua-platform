@@ -72,7 +72,7 @@ export type SaveSettingsResult =
  */
 export async function saveEventSettings(
   event: EventRow,
-  input: unknown,
+  input: unknown
 ): Promise<SaveSettingsResult> {
   const parsed = settingsSchema.safeParse(input);
   if (!parsed.success) {

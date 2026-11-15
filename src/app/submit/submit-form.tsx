@@ -7,6 +7,7 @@ import { CustomFields } from "@/components/custom-fields";
 import { useEvent } from "@/components/event-context";
 import { customFieldName } from "@/lib/custom-fields";
 import { hiddenQuestions } from "@/lib/event-settings";
+import { Select } from "@/components/select";
 
 function formatPhone(v: string) {
   let s = v.replace(/[^\d+()\-\s]/g, "");
@@ -288,12 +289,11 @@ export function SubmitForm({
             {shown("location") && (
               <div>
                 <label className="field-label">Country *</label>
-                <select
+                <Select
                   name="country"
                   required
                   defaultValue=""
-                  autoComplete="country-name"
-                  className="field-input mt-1"
+                      className="field-input mt-1"
                 >
                   <option value="">— Select —</option>
                   {COUNTRIES.map((c) => (
@@ -301,7 +301,7 @@ export function SubmitForm({
                       {c}
                     </option>
                   ))}
-                </select>
+                </Select>
                 {err("country")}
               </div>
             )}
@@ -329,9 +329,9 @@ export function SubmitForm({
             {shown("submitter_profile") && (
               <div>
                 <label className="field-label">Affiliated Org</label>
-                <select
+                <Select
                   value={orgChoice}
-                  onChange={(e) => setOrgChoice(e.target.value)}
+                  onChange={(value) => setOrgChoice(value)}
                   name={orgChoice === OTHER ? undefined : "affiliated_org"}
                   className="field-input mt-1"
                 >
@@ -342,7 +342,7 @@ export function SubmitForm({
                     </option>
                   ))}
                   <option value={OTHER}>Other…</option>
-                </select>
+                </Select>
                 {orgChoice === OTHER && (
                   <input
                     name="affiliated_org"
@@ -357,9 +357,9 @@ export function SubmitForm({
             {shown("submitter_profile") && (
               <div>
                 <label className="field-label">Role</label>
-                <select
+                <Select
                   value={roleChoice}
-                  onChange={(e) => setRoleChoice(e.target.value)}
+                  onChange={(value) => setRoleChoice(value)}
                   name={roleChoice === OTHER ? undefined : "submitter_role"}
                   className="field-input mt-1"
                 >
@@ -370,7 +370,7 @@ export function SubmitForm({
                     </option>
                   ))}
                   <option value={OTHER}>Other…</option>
-                </select>
+                </Select>
                 {roleChoice === OTHER && (
                   <input
                     name="submitter_role"
@@ -480,7 +480,7 @@ export function SubmitForm({
                         <label className="field-label">
                           Country of Residence
                         </label>
-                        <select
+                        <Select
                           name={`member${n}_country`}
                           defaultValue=""
                           className="field-input mt-1"
@@ -491,7 +491,7 @@ export function SubmitForm({
                               {c}
                             </option>
                           ))}
-                        </select>
+                        </Select>
                       </div>
                     )}
                   </div>
@@ -563,7 +563,7 @@ export function SubmitForm({
             {shown("challenge_track") && (
               <div>
                 <label className="field-label">Challenge Track *</label>
-                <select
+                <Select
                   name="challenge_track"
                   required
                   className="field-input mt-1"
@@ -575,13 +575,13 @@ export function SubmitForm({
                       {t}
                     </option>
                   ))}
-                </select>
+                </Select>
               </div>
             )}
             {shown("problem_brief") && (
               <div className="md:col-span-2">
                 <label className="field-label">Problem Brief *</label>
-                <select
+                <Select
                   name="problem_brief"
                   required
                   className="field-input mt-1"
@@ -593,7 +593,7 @@ export function SubmitForm({
                       {b}
                     </option>
                   ))}
-                </select>
+                </Select>
                 <p className="mt-1 text-xs text-dust">
                   Judges score you against your brief&apos;s success metrics.
                 </p>
@@ -603,7 +603,7 @@ export function SubmitForm({
             {shown("customer_type") && (
               <div>
                 <label className="field-label">Who Is It For? *</label>
-                <select
+                <Select
                   name="customer_type"
                   required
                   defaultValue=""
@@ -616,14 +616,14 @@ export function SubmitForm({
                   <option value="Organizations">
                     Organizations — businesses, nonprofits &amp; public bodies
                   </option>
-                </select>
+                </Select>
                 {err("customer_type")}
               </div>
             )}
             {shown("region") && (
               <div>
                 <label className="field-label">Your Region *</label>
-                <select
+                <Select
                   name="region"
                   required
                   defaultValue=""
@@ -635,7 +635,7 @@ export function SubmitForm({
                       {r}
                     </option>
                   ))}
-                </select>
+                </Select>
                 {err("region")}
               </div>
             )}
@@ -669,9 +669,9 @@ export function SubmitForm({
             {shown("focus_area") && (
               <div>
                 <label className="field-label">Focus Area *</label>
-                <select
+                <Select
                   value={sectorChoice}
-                  onChange={(e) => setSectorChoice(e.target.value)}
+                  onChange={(value) => setSectorChoice(value)}
                   name={sectorChoice === OTHER ? undefined : "focus_area"}
                   required
                   className="field-input mt-1"
@@ -683,7 +683,7 @@ export function SubmitForm({
                     </option>
                   ))}
                   <option value={OTHER}>Other…</option>
-                </select>
+                </Select>
                 {sectorChoice === OTHER && (
                   <input
                     name="focus_area"
@@ -699,7 +699,7 @@ export function SubmitForm({
             {shown("solution_stage") && (
               <div>
                 <label className="field-label">Solution Stage *</label>
-                <select
+                <Select
                   name="solution_stage"
                   required
                   defaultValue=""
@@ -711,16 +711,16 @@ export function SubmitForm({
                       {s}
                     </option>
                   ))}
-                </select>
+                </Select>
                 {err("solution_stage")}
               </div>
             )}
             {shown("area_of_specification") && (
               <div>
                 <label className="field-label">Area of Specification *</label>
-                <select
+                <Select
                   value={areaChoice}
-                  onChange={(e) => setAreaChoice(e.target.value)}
+                  onChange={(value) => setAreaChoice(value)}
                   name={
                     areaChoice === OTHER ? undefined : "area_of_specification"
                   }
@@ -734,7 +734,7 @@ export function SubmitForm({
                     </option>
                   ))}
                   <option value={OTHER}>Other…</option>
-                </select>
+                </Select>
                 {areaChoice === OTHER && (
                   <input
                     name="area_of_specification"
@@ -752,7 +752,7 @@ export function SubmitForm({
                 <label className="field-label">
                   Will your solution apply AI? *
                 </label>
-                <select
+                <Select
                   name="applies_ai"
                   required
                   defaultValue=""
@@ -761,7 +761,7 @@ export function SubmitForm({
                   <option value="">— Select —</option>
                   <option value="Yes">Yes</option>
                   <option value="No">No</option>
-                </select>
+                </Select>
                 {err("applies_ai")}
               </div>
             )}

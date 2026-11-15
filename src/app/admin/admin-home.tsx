@@ -47,6 +47,7 @@ import {
 import { EventPanel } from "./event-panel";
 import { useEvent } from "@/components/event-context";
 import { customAnswerRows } from "@/lib/custom-fields";
+import { Select } from "@/components/select";
 
 type Phase = "submissions" | "judging" | "results";
 
@@ -1380,7 +1381,7 @@ function AddPersonForm() {
           <label className="field-label" htmlFor="add-person-role">
             Role
           </label>
-          <select
+          <Select
             id="add-person-role"
             name="role"
             defaultValue="judge"
@@ -1388,7 +1389,7 @@ function AddPersonForm() {
           >
             <option value="judge">Judge</option>
             <option value="mentor">Mentor</option>
-          </select>
+          </Select>
         </div>
         <div className="flex items-end">
           <button className="btn-accent w-full md:w-auto" disabled={pending}>
@@ -1594,7 +1595,7 @@ function TestAccountTool() {
           <label className="field-label" htmlFor="test-role">
             Role
           </label>
-          <select
+          <Select
             id="test-role"
             name="role"
             defaultValue="judge"
@@ -1602,7 +1603,7 @@ function TestAccountTool() {
           >
             <option value="judge">Judge</option>
             <option value="mentor">Mentor</option>
-          </select>
+          </Select>
         </div>
         <div className="flex items-end">
           <button className="btn" disabled={testPending}>
@@ -2966,13 +2967,13 @@ function TeamPanel({
           </div>
           <div>
             <label className="field-label">Role</label>
-            <select name="role" defaultValue="viewer" className="field-input mt-1">
+            <Select name="role" defaultValue="viewer" className="field-input mt-1">
               {ADMIN_ROLES.map((r) => (
                 <option key={r} value={r}>
                   {ROLE_LABELS[r]}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
           <div>
             <label className="field-label">
@@ -3091,11 +3092,11 @@ function TeamPanel({
                       <div className="text-xs text-dust">{m.email}</div>
                     </td>
                     <td className="py-3 pr-3">
-                      <select
+                      <Select
                         value={m.role}
                         disabled={isSelf || locked || pending}
-                        onChange={(e) =>
-                          run(() => setAdminUserRole(m.id, e.target.value))
+                        onChange={(value) =>
+                          run(() => setAdminUserRole(m.id, value))
                         }
                         className="field-input h-9 py-0 text-xs disabled:opacity-50"
                       >
@@ -3104,7 +3105,7 @@ function TeamPanel({
                             {ROLE_LABELS[r]}
                           </option>
                         ))}
-                      </select>
+                      </Select>
                     </td>
                     <td className="py-3 pr-3">
                       {m.is_active ? (

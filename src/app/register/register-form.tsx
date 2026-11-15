@@ -6,6 +6,7 @@ import { COUNTRIES } from "@/lib/countries";
 import { CustomFields } from "@/components/custom-fields";
 import { useEvent } from "@/components/event-context";
 import { hiddenQuestions } from "@/lib/event-settings";
+import { Select } from "@/components/select";
 
 export function RegisterForm() {
   const EVENT = useEvent();
@@ -108,11 +109,10 @@ export function RegisterForm() {
           )}
           <div>
             <label className="field-label">Country *</label>
-            <select
+            <Select
               name="country"
               required
               defaultValue=""
-              autoComplete="country-name"
               className="field-input mt-1"
             >
               <option value="">— Select —</option>
@@ -121,7 +121,7 @@ export function RegisterForm() {
                   {c}
                 </option>
               ))}
-            </select>
+            </Select>
             {err("country")}
           </div>
           {shown("organization") && (
@@ -217,7 +217,7 @@ export function RegisterForm() {
           {shown("primary_interest") && (
             <div>
               <label className="field-label">Primary Interest *</label>
-              <select
+              <Select
                 name="primary_interest"
                 required
                 defaultValue=""
@@ -229,14 +229,14 @@ export function RegisterForm() {
                     {t}
                   </option>
                 ))}
-              </select>
+              </Select>
               {err("primary_interest")}
             </div>
           )}
           {shown("experience_level") && (
             <div>
               <label className="field-label">Experience Level *</label>
-              <select
+              <Select
                 name="experience_level"
                 required
                 defaultValue=""
@@ -248,7 +248,7 @@ export function RegisterForm() {
                     {e}
                   </option>
                 ))}
-              </select>
+              </Select>
               {err("experience_level")}
             </div>
           )}
@@ -298,7 +298,7 @@ export function RegisterForm() {
         {shown("heard_about") && (
           <div>
             <label className="field-label">How did you hear about us? *</label>
-            <select
+            <Select
               name="heard_about"
               required
               defaultValue=""
@@ -310,7 +310,7 @@ export function RegisterForm() {
                   {h}
                 </option>
               ))}
-            </select>
+            </Select>
             {err("heard_about")}
           </div>
         )}

@@ -16,6 +16,7 @@ import {
   type FormName,
 } from "@/lib/event-settings";
 import { saveSettings, uploadCampaignImage } from "./actions";
+import { Select } from "@/components/select";
 
 type ListKey = {
   [K in keyof EventSettings]: EventSettings[K] extends string[] ? K : never;
@@ -291,18 +292,18 @@ export function EventPanel({
           )}
           <label className="block">
             <span className="field-label">Largest team size</span>
-            <select
+            <Select
               className="field-input mt-1"
               value={draft.maxTeamSize}
               disabled={disabled}
-              onChange={(e) => set("maxTeamSize", Number(e.target.value))}
+              onChange={(value) => set("maxTeamSize", Number(value))}
             >
               {[1, 2, 3, 4, 5].map((n) => (
                 <option key={n} value={n}>
                   {n}
                 </option>
               ))}
-            </select>
+            </Select>
           </label>
         </div>
         <div className="mt-4">
@@ -421,15 +422,15 @@ export function EventPanel({
           )}
           <label className="block max-w-xl">
             <span className="field-label">How the ranking is worked out</span>
-            <select
+            <Select
               className="field-input mt-1"
               data-ranking
               value={draft.judging.ranking}
               disabled={disabled}
-              onChange={(e) =>
+              onChange={(value) =>
                 set("judging", {
                   ...draft.judging,
-                  ranking: e.target.value as "normalized" | "average",
+                  ranking: value as "normalized" | "average",
                 })
               }
             >
@@ -439,7 +440,7 @@ export function EventPanel({
               <option value="average">
                 Plain average of judges&apos; totals
               </option>
-            </select>
+            </Select>
             <span className="mt-1 block text-[0.7rem] text-dust">
               The first is fairer when judges score on different scales. The
               second is simpler to explain.
@@ -730,13 +731,13 @@ export function EventPanel({
                       {text("Question", f.label, (v) => edit({ label: v }))}
                       <label className="block">
                         <span className="field-label">Answer type</span>
-                        <select
+                        <Select
                           className="field-input mt-1"
                           value={f.type}
                           disabled={disabled}
-                          onChange={(e) =>
+                          onChange={(value) =>
                             edit({
-                              type: e.target.value as CustomField["type"],
+                              type: value as CustomField["type"],
                             })
                           }
                         >
@@ -745,7 +746,7 @@ export function EventPanel({
                               {TYPE_LABELS[t]}
                             </option>
                           ))}
-                        </select>
+                        </Select>
                       </label>
                     </div>
                     {(f.type === "select" || f.type === "checkboxes") &&

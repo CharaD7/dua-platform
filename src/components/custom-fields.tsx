@@ -2,6 +2,7 @@
 
 import type { CustomField } from "@/lib/event-settings";
 import { customFieldName } from "@/lib/custom-fields";
+import { Select } from "./select";
 
 /**
  * The questions an organizer has added to a form. Renders nothing when there
@@ -36,14 +37,14 @@ export function CustomFields({
             {f.type === "textarea" ? (
               <textarea id={name} name={name} rows={4} required={f.required} defaultValue={saved} className="field-input mt-1" />
             ) : f.type === "select" ? (
-              <select id={name} name={name} required={f.required} defaultValue={saved} className="field-input mt-1">
+              <Select id={name} name={name} required={f.required} defaultValue={saved} className="field-input mt-1">
                 <option value="">— Select —</option>
                 {f.options.map((o) => (
                   <option key={o} value={o}>
                     {o}
                   </option>
                 ))}
-              </select>
+              </Select>
             ) : f.type === "checkboxes" ? (
               <div className="mt-2 grid gap-2 sm:grid-cols-2">
                 {f.options.map((o) => (

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { Select } from "@/components/select";
 
 export type SubRow = {
   id: string;
@@ -78,9 +79,9 @@ export function SubmissionList({
           </div>
           <div>
             <label className="field-label">Track</label>
-            <select
+            <Select
               value={track}
-              onChange={(e) => setTrack(e.target.value)}
+              onChange={(value) => setTrack(value)}
               className="field-input mt-1"
             >
               <option value="all">All tracks</option>
@@ -89,7 +90,7 @@ export function SubmissionList({
                   {t}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
         </div>
 

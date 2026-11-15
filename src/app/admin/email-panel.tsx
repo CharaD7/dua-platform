@@ -13,6 +13,7 @@ import {
   isAdminAudience,
   type Audience,
 } from "@/lib/campaign-audiences";
+import { Select } from "@/components/select";
 
 export type CampaignRow = {
   id: string;
@@ -326,10 +327,10 @@ export function EmailPanel({
             <label className="field-label" htmlFor="campaign-audience">
               Audience
             </label>
-            <select
+            <Select
               id="campaign-audience"
               value={audience}
-              onChange={(e) => setAudience(e.target.value as Audience)}
+              onChange={(value) => setAudience(value as Audience)}
               className="field-input mt-1"
             >
               {AUDIENCES.map((a) => (
@@ -337,7 +338,7 @@ export function EmailPanel({
                   {AUDIENCE_LABELS[a]}
                 </option>
               ))}
-            </select>
+            </Select>
 <p className="mt-1.5 text-[0.7rem] text-dust">
               {!counts
                 ? "Counting…"

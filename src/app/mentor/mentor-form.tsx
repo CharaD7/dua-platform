@@ -6,6 +6,7 @@ import { COUNTRIES } from "@/lib/countries";
 import { CustomFields } from "@/components/custom-fields";
 import { useEvent } from "@/components/event-context";
 import { hiddenQuestions } from "@/lib/event-settings";
+import { Select } from "@/components/select";
 
 export function MentorForm() {
   const EVENT = useEvent();
@@ -84,11 +85,10 @@ export function MentorForm() {
           )}
           <div>
             <label className="field-label">Country *</label>
-            <select
+            <Select
               name="country"
               required
               defaultValue=""
-              autoComplete="country-name"
               className="field-input mt-1"
             >
               <option value="">— Select —</option>
@@ -97,7 +97,7 @@ export function MentorForm() {
                   {c}
                 </option>
               ))}
-            </select>
+            </Select>
             {err("country")}
           </div>
           {shown("occupation") && (
@@ -167,7 +167,7 @@ export function MentorForm() {
               <label className="field-label">
                 Which track can you mentor? *
               </label>
-              <select
+              <Select
                 name="primary_interest"
                 required
                 defaultValue=""
@@ -179,14 +179,14 @@ export function MentorForm() {
                     {t}
                   </option>
                 ))}
-              </select>
+              </Select>
               {err("primary_interest")}
             </div>
           )}
           {shown("experience_level") && (
             <div>
               <label className="field-label">Experience Level *</label>
-              <select
+              <Select
                 name="experience_level"
                 required
                 defaultValue=""
@@ -198,7 +198,7 @@ export function MentorForm() {
                     {e}
                   </option>
                 ))}
-              </select>
+              </Select>
               {err("experience_level")}
             </div>
           )}
@@ -207,7 +207,7 @@ export function MentorForm() {
         {shown("heard_about") && (
           <div>
             <label className="field-label">How did you hear about us? *</label>
-            <select
+            <Select
               name="heard_about"
               required
               defaultValue=""
@@ -219,7 +219,7 @@ export function MentorForm() {
                   {h}
                 </option>
               ))}
-            </select>
+            </Select>
             {err("heard_about")}
           </div>
         )}

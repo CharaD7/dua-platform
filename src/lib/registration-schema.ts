@@ -36,17 +36,17 @@ const registrationFields = {
 
 // Rules that span more than one field. Each applies only while the questions
 // it is about are being asked.
-function refineRegistration<T extends z.ZodTypeAny>(schema: T, hidden: ReadonlySet<string>) {
-  let out: z.ZodTypeAny = schema;
+function refineRegistration(schema: z.ZodType, hidden: ReadonlySet<string>): z.ZodType<RegistrationInput> {
+  let out = schema as z.ZodType<RegistrationInput>;
   if (!hidden.has("participating_as"))
     out = out.refine(
-      (d: { participating_as: string; team_name: string }) =>
+      (d) =>
         d.participating_as !== "Team" || d.team_name.trim().length > 0,
       { message: "Team name required", path: ["team_name"] },
     );
   if (!hidden.has("linkedin_url"))
     out = out.refine(
-      (d: { linkedin_url: string; website_url: string }) => d.linkedin_url !== "" || d.website_url !== "",
+      (d) => d.linkedin_url !== "" || d.website_url !== "",
       {
         message: "Add a LinkedIn profile or personal website so we can verify you",
         path: ["linkedin_url"],
@@ -67,17 +67,17 @@ function relax<S extends z.ZodRawShape>(shape: S, hidden: ReadonlySet<string>): 
 
 // Public pre-event registration. Lighter than the project submission schema —
 // this just builds the participant list.
-export const registrationSchema = refineRegistration(
+export const registrationSchema: z.ZodType<RegistrationInput> = refineRegistration(
   z.object(registrationFields),
   NOTHING_HIDDEN,
-) as z.ZodType<RegistrationInput, z.ZodTypeDef, unknown>;
+);
 
 /**
  * The registration rules for an event: the same, except that questions the
  * organizer has switched off are not required.
  */
-export function registrationSchemaFor(hidden: ReadonlySet<string>) {
-  return refineRegistration(z.object(relax(registrationFields, hidden)), hidden) as typeof registrationSchema;
+export function registrationSchemaFor(hidden: ReadonlySet<string>): z.ZodType<RegistrationInput> {
+  return refineRegistration(z.object(relax(registrationFields, hidden)), hidden);
 }
 
 const registrationObject = z.object(registrationFields);

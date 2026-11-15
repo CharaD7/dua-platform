@@ -40,7 +40,7 @@ const LABELS: Record<string, string> = {
   home: "Homepage",
 };
 
-function labelFor(path: (string | number)[]): string {
+function labelFor(path: PropertyKey[]): string {
   const [first] = path;
   return LABELS[String(first)] ?? (first === undefined ? "Settings" : String(first));
 }

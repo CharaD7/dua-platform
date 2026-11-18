@@ -37,6 +37,23 @@ npm run dev          # start the site
 
 Open <http://localhost:3000>.
 
+### Run everything in Docker
+
+If you would rather not run Node on the host, the container image can start
+the database and the app together:
+
+```bash
+docker compose up -d --build
+docker compose exec app node scripts/demo-data.mjs   # optional sample data
+```
+
+Open <http://localhost:3000>. The app runs migrations on startup. Stop it with
+`docker compose down`; the database volume is kept.
+
+The Compose defaults are for local development only. Set `ADMIN_PASSWORD`,
+`SUBMISSION_EDIT_SECRET` and `DEMO_MODE` in the shell (or a `.env` file) for
+anything beyond a local demo.
+
 ## What to look at
 
 `.env.local.example` turns on **demo mode**, so the seed creates three sample

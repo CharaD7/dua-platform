@@ -23,6 +23,29 @@ services:
       timeout: 3s
       retries: 30
 
+  # The app itself. `docker compose up -d --build` starts the database and the
+  # app; `npm run db:up` still starts only the database for host development.
+  #
+  # The defaults are for local development only. Set ADMIN_PASSWORD,
+  # SUBMISSION_EDIT_SECRET and DEMO_MODE in the shell (or a .env file) before
+  # using this for anything beyond a local demo.
+  app:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+    environment:
+      DATABASE_URL: postgres://dua:dua@db:5432/dua
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-demo-admin-password}
+      SUBMISSION_EDIT_SECRET: ${SUBMISSION_EDIT_SECRET:-local-compose-secret-change-me}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+      DEMO_MODE: ${DEMO_MODE:-true}
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
   # A web UI for browsing the database, at http://localhost:5050.
   # Only starts when you ask for the "tools" profile.
   pgadmin:

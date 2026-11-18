@@ -175,8 +175,8 @@ open an issue for it, as described [above](#contributors-wanted).
 
 **Setup and testing**
 
-- [ ] A container image for the app, so `docker compose up` starts everything
-      and not only the database.
+- [x] A container image for the app, so `docker compose up` starts everything
+      and not only the database. The `app` service runs migrations on startup.
 - [ ] An end-to-end test suite that drives a real browser through signing in,
       scoring, the Event tab and the public forms, and runs in CI.
 - [ ] Check the optional providers against the real services: Resend, S3 on
